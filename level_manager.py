@@ -15,13 +15,15 @@ def load_level(level_name):
     count = level_data["count"]
     radius = level_data["radius"]
     speed_range = level_data["speed_range"]
+    accel = level_data.get("acceleration", 0)
+    rotation = level_data.get("rotation_speed", 0)
 
     for _ in range(count):
         x = random.randint(0, WIDTH)
         y = random.randint(0, HEIGHT)
         dx = random.uniform(*speed_range)
         dy = random.uniform(*speed_range)
-        asteroids.append(Asteroid(x, y, dx, dy, radius, image=None))
+        asteroids.append(Asteroid(x, y, dx, dy, radius, image=None, level=3, acceleration=accel, rotation_speed=rotation))
 
 def get_asteroids():
     return asteroids

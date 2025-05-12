@@ -2,6 +2,7 @@ import pygame, sys
 from viewport import WIDTH, HEIGHT, background
 from spaceship import Spaceship
 from level_manager import get_asteroids, load_level
+from config import levels as level_data
 
 # Init
 pygame.init()
@@ -10,19 +11,79 @@ pygame.display.set_caption('Star Crash')
 clock = pygame.time.Clock()
 FIRE_DELAY = 200  # milliseconds between shots
 last_shot_time = 0
-
-
+INVINCIBILITY_DURATION = 2000
+last_respawn_time = 0
+lives = 3
+game_over = False
+level_names = list(level_data.keys())  # ["level_one", "level_two", ...]
+current_level_index = 0
+level = level_names[current_level_index]
+show_level_screen = True
+level_intro_time = 0
+ready_to_start = False
+death_flash = False
+death_flash_start = 0
+FLASH_DURATION = 500  # milliseconds
 ship = Spaceship(WIDTH // 2, HEIGHT // 2)
 bullets = []
 
-def main(): 
-    global last_shot_time
-    load_level("level_one")  # Initialize first level
+def reset_ship():
+    global last_respawn_time
+    ship.x = WIDTH // 2
+    ship.y = HEIGHT // 2         
+    ship.vx = 0
+    ship.vy = 0
+    ship.angle = 0
+    last_respawn_time = pygame.time.get_ticks()
+
+def draw_level_text(level_name):
+    font = pygame.font.SysFont(None, 48)
+    text = font.render(f"{level_name.replace('_', ' ').title()}", True, (255, 255, 255))
+    rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+    screen.blit(text, rect)
+
+    if level_name == "level_one":
+        font_small = pygame.font.SysFont(None, 32)
+        text2 = font_small.render("Press SPACE to begin", True, (255, 255, 255))
+        rect2 = text2.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 20))
+        screen.blit(text2, rect2)
+
+def main():
+    global last_shot_time, lives, game_over, level
+    global show_level_screen, level_intro_time, ready_to_start
+    global current_level_index
+
+    load_level(level)
+    level_intro_time = pygame.time.get_ticks()
+    show_level_screen = True
+    ready_to_start = False
 
     while True:
         screen.blit(background, (0, 0))
         current_time = pygame.time.get_ticks()
         keys = pygame.key.get_pressed()
+
+        # Show level text and pause logic
+        if show_level_screen:
+            draw_level_text(level)
+            pygame.display.flip()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            if level == "level_one":
+                if not ready_to_start:
+                    if any(keys):  # start on any key press
+                        show_level_screen = False
+                        ready_to_start = True
+                    continue
+            else:
+                if current_time - level_intro_time < 3000:
+                    continue
+                else:
+                    show_level_screen = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -41,10 +102,49 @@ def main():
         for bullet in bullets:
             bullet.move()
             bullet.draw(screen)
-           
+
         for asteroid in get_asteroids():
             asteroid.move(WIDTH, HEIGHT)
-            asteroid.draw(screen)  
+            asteroid.draw(screen)
+
+        for bullet in bullets[:]:
+            bullet_rect = bullet.rect()
+            for asteroid in get_asteroids()[:]:
+                if bullet_rect.colliderect(asteroid.rect()):
+                    bullets.remove(bullet)
+                    get_asteroids().remove(asteroid)
+                    new_asteroids = asteroid.split()
+                    get_asteroids().extend(new_asteroids)
+                    break
+
+        ship_rect = ship.rect
+        for asteroid in get_asteroids():
+            if current_time - last_respawn_time > INVINCIBILITY_DURATION:
+                if ship_rect.colliderect(asteroid.rect()):
+                    lives -= 1
+                    reset_ship()
+                    death_flash = True
+                    death_flash_start = pygame.time.get_ticks()
+                    if lives <= 0:
+                        game_over = True
+                    break
+
+        if not get_asteroids() and not game_over:
+            current_level_index += 1
+            if current_level_index < len(level_names):
+                level = level_names[current_level_index]
+                load_level(level)
+                level_intro_time = pygame.time.get_ticks()
+                show_level_screen = True
+            else:
+                print("YOU WIN")
+                pygame.quit()
+                sys.exit()
+
+        if game_over:
+            print("GAME OVER")
+            pygame.quit()
+            sys.exit()
 
         rotated_image, rotated_rect = ship.draw()
         screen.blit(rotated_image, rotated_rect)
