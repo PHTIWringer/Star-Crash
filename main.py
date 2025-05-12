@@ -52,6 +52,7 @@ def main():
     global last_shot_time, lives, game_over, level
     global show_level_screen, level_intro_time, ready_to_start
     global current_level_index
+    global death_flash, death_flash_start
 
     load_level(level)
     level_intro_time = pygame.time.get_ticks()
@@ -149,6 +150,15 @@ def main():
         rotated_image, rotated_rect = ship.draw()
         screen.blit(rotated_image, rotated_rect)
 
+        if death_flash:
+            if pygame.time.get_ticks() - death_flash_start < FLASH_DURATION:
+                flash_overlay = pygame.Surface((WIDTH, HEIGHT))
+                flash_overlay.fill((255, 0, 0))
+                flash_overlay.set_alpha(100)  # semi-transparent
+                screen.blit(flash_overlay, (0, 0))
+            else:
+                death_flash = False
+                
         pygame.display.flip()
         clock.tick(60)
 
