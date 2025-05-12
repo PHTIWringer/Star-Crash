@@ -1,5 +1,6 @@
 import pygame
 import math
+from projectiles import Bullet
 
 class Spaceship:
     def __init__(self, x, y):
@@ -14,8 +15,12 @@ class Spaceship:
         self.max_speed = 100
         self.drag = 0.985  # slow friction
 
-        self.image = pygame.Surface((40, 30), pygame.SRCALPHA)
-        pygame.draw.polygon(self.image, (255, 255, 255), [(0, 30), (20, 0), (40, 30)])
+        self.original_image = pygame.image.load("E:/VSCode Files/Star Crash/destroyer.png").convert_alpha()
+        self.original_image = pygame.transform.scale(self.original_image, (60, 60))  # spaceship size
+        self.original_image = pygame.transform.rotate(self.original_image, 90)  # rotate left to face upward
+        self.image = self.original_image.copy()
+        self.rect = self.image.get_rect(center=(x, y))
+
         self.original_image = self.image
         self.rect = self.image.get_rect(center=(x, y))
 
@@ -25,9 +30,9 @@ class Spaceship:
         if keys[pygame.K_RIGHT]:
             self.angle -= 5
         if keys[pygame.K_UP]:
-            rad = math.radians(self.angle)
-            self.vx += self.acceleration * math.sin(rad)
-            self.vy -= self.acceleration * math.cos(rad)
+            rad = math.radians(self.angle + 90)
+            self.vx += self.acceleration * math.cos(rad)
+            self.vy -= self.acceleration * math.sin(rad)
 
             # Limit speed
             speed = math.hypot(self.vx, self.vy)
@@ -48,3 +53,14 @@ class Spaceship:
         rotated = pygame.transform.rotate(self.original_image, self.angle)
         rotated_rect = rotated.get_rect(center=self.rect.center)
         return rotated, rotated_rect
+    
+    def fire(self):
+    # Distance from center to nose: use hypotenuse of half-width and half-height
+        image_width, image_height = self.image.get_size()
+        nose_offset = math.hypot(image_width / 2, image_height / 2)
+
+        rad = math.radians(self.angle + 90)
+        nose_x = self.x + math.cos(rad) * nose_offset
+        nose_y = self.y + math.sin(rad) * nose_offset
+
+        return Bullet(nose_x, nose_y, self.angle + 90)
