@@ -10,8 +10,8 @@ class Bullet:
         self.radius = 6
 
         rad = math.radians(angle)
-        self.dx = speed * math.cos(rad)
-        self.dy = -speed * math.sin(rad)
+        self.dx = -speed * math.sin(rad)
+        self.dy = -speed * math.cos(rad)
 
     def move(self):
         self.x += self.dx

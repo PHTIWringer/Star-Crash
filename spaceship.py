@@ -24,6 +24,9 @@ class Spaceship:
         self.original_image = self.image
         self.rect = self.image.get_rect(center=(x, y))
 
+        self.particles = []
+        self.thrusting = False
+
     def handle_input(self, keys):
         if keys[pygame.K_LEFT]:
             self.angle += 5
@@ -59,8 +62,28 @@ class Spaceship:
         image_width, image_height = self.image.get_size()
         nose_offset = math.hypot(image_width / 2, image_height / 2)
 
-        rad = math.radians(self.angle + 90)
-        nose_x = self.x + math.cos(rad) * nose_offset
-        nose_y = self.y + math.sin(rad) * nose_offset
+        rad = math.radians(self.angle)
+        nose_offset = 30
+        nose_x = self.x - math.sin(rad) * nose_offset
+        nose_y = self.y - math.cos(rad) * nose_offset
 
-        return Bullet(nose_x, nose_y, self.angle + 90)
+        return Bullet(nose_x, nose_y, self.angle)
+        
+        self.particles = []  # in __init__
+
+    def update_particles(self):
+        if self.thrusting:
+            angle_rad = math.radians(self.angle)
+            offset = -30
+            px = self.x - math.sin(angle_rad) * offset
+            py = self.y - math.cos(angle_rad) * offset
+            self.particles.append([px, py, 10])  # [x, y, life]
+
+        # Update particles: shrink life and remove old ones
+        self.particles = [[x, y, life - 0.5] for x, y, life in self.particles if life > 0]
+
+    def draw_particles(self, screen):
+        for x, y, life in self.particles:
+            color = (255, 100, 0)
+            pygame.draw.circle(screen, color, (int(x), int(y)), int(life))
+

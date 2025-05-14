@@ -46,6 +46,14 @@ class Asteroid:
             new_level = self.level - 1
             new_radius = self.radius // 2
             fragments = []
+
+            #  Resize the current image if it exists
+            if self.image:
+                scaled_image = pygame.transform.scale(self.image, (new_radius * 2, new_radius * 2))
+            else:
+                scaled_image = None
+
+            # Generate new smaller asteroids
             for _ in range(2):
                 angle = random.uniform(0, 2 * math.pi)
                 speed = random.uniform(1.5, 3.5)
@@ -55,12 +63,12 @@ class Asteroid:
                     self.x, self.y,
                     dx, dy,
                     new_radius,
-                    image=None,
+                    image=scaled_image,
                     level=new_level,
                     acceleration=self.acceleration * 1.1,
                     rotation_speed=self.rotation_speed * 1.2
                 ))
+
             return fragments
+
         return []
-
-

@@ -1,4 +1,4 @@
-import random
+import random, pygame
 from config import levels
 from viewport import WIDTH, HEIGHT
 from asteroid import Asteroid
@@ -18,12 +18,26 @@ def load_level(level_name):
     accel = level_data.get("acceleration", 0)
     rotation = level_data.get("rotation_speed", 0)
 
+    image_path = level_data.get("image")
+
+    if image_path:
+        original = pygame.image.load(image_path).convert_alpha()
+
     for _ in range(count):
         x = random.randint(0, WIDTH)
         y = random.randint(0, HEIGHT)
         dx = random.uniform(*speed_range)
         dy = random.uniform(*speed_range)
-        asteroids.append(Asteroid(x, y, dx, dy, radius, image=None, level=3, acceleration=accel, rotation_speed=rotation))
+
+        scaled = pygame.transform.scale(original, (radius * 2, radius * 2))
+
+        asteroids.append(Asteroid(
+            x, y, dx, dy, radius,
+            image=scaled,
+            level=3,
+            acceleration=accel,
+            rotation_speed=rotation
+        ))
 
 def get_asteroids():
     return asteroids

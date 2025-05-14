@@ -100,6 +100,10 @@ def main():
         ship.x %= WIDTH
         ship.y %= HEIGHT
 
+        ship.thrusting = keys[pygame.K_UP]
+        ship.update_particles()
+        ship.draw_particles(screen)
+
         for bullet in bullets:
             bullet.move()
             bullet.draw(screen)
@@ -148,6 +152,7 @@ def main():
             sys.exit()
 
         rotated_image, rotated_rect = ship.draw()
+        ship.draw_particles(screen)
         screen.blit(rotated_image, rotated_rect)
 
         if death_flash:
@@ -158,7 +163,7 @@ def main():
                 screen.blit(flash_overlay, (0, 0))
             else:
                 death_flash = False
-                
+
         pygame.display.flip()
         clock.tick(60)
 
