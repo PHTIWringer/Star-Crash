@@ -14,7 +14,7 @@ levels = {
         "speed_range": (-2, 2),
         "acceleration": 0.002,
         "rotation_speed": 0.3,
-        "image": "E:/VSCode Files/Star Crash/assets/meteor_detailed_NW.png"
+        "image": "E:/VSCode Files/Star Crash/assets/meteor_detailed_NE.png"
     },
     "level_three": {
         "count": 4,
@@ -22,7 +22,7 @@ levels = {
         "speed_range": (-2.5, 2.5),
         "acceleration": 0.003,
         "rotation_speed": 0.4,
-        "image": "E:/VSCode Files/Star Crash/assets/meteor_detailed_SE.png"
+        "image": "E:/VSCode Files/Star Crash/assets/meteor_detailed_NE.png"
     },
     "level_four": {
         "count": 5,
@@ -30,6 +30,6 @@ levels = {
         "speed_range": (-3, 3),
         "acceleration": 0.004,
         "rotation_speed": 0.5,
-        "image": "E:/VSCode Files/Star Crash/assets/meteor_detailed_SW.png"
+        "image": "E:/VSCode Files/Star Crash/assets/meteor_detailed_NW.png"
     }
 }
