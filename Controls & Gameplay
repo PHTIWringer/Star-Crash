@@ -1,0 +1,40 @@
+Controls:
+Key Action
+Arrow Up Apply forward thrust (from ship rear)
+Arrow Left Rotate ship left
+Arrow Right Rotate ship right
+Spacebar Fire bullets from ship's nose
+1 Upgrade fire rate (costs money)
+2 Upgrade max ship speed (costs money)
+3 Upgrade bullet speed (costs money)
+
+Game Objectives:
+Destroy asteroids with bullets
+
+Asteroids split into smaller pieces when hit
+
+Avoid collisions — each hit costs 1 life
+
+You start with 3 lives. Game over when they’re gone
+
+When all asteroids are destroyed, the next level loads automatically
+
+Scoring & Upgrades:
+Earn 50 coins (dollars or money in code) for each asteroid destroyed
+
+Use money to purchase upgrades anytime during gameplay:
+
+Faster shooting (1)
+
+Higher top speed (2)
+
+Faster bullets (3)
+
+Your money and upgrades are saved to a file when you quit or win
+
+Level Start:
+At the start of Level 1, press Space to begin
+
+For other levels, there's a 3-second delay before play begins
+
+A red screen flash indicates when your ship was hit

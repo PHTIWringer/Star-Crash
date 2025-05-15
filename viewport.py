@@ -2,8 +2,8 @@ import pygame
 from PIL import Image
 
 # viewport
-WIDTH = 1000
-HEIGHT = 800
+WIDTH = 1200
+HEIGHT = 1000
 
 # Background Image
 img = Image.open("Background_image.png").convert("RGB")
