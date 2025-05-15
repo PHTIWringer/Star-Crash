@@ -1,6 +1,8 @@
 import pygame
 import math
 from projectiles import Bullet
+import os
+from config import ASSETS_DIR
 
 class Spaceship:
     def __init__(self, x, y):
@@ -15,13 +17,12 @@ class Spaceship:
         self.max_speed = 100
         self.drag = 0.985  # slow friction
 
-        self.original_image = pygame.image.load("E:/VSCode Files/Star Crash/destroyer.png").convert_alpha()
+        self.original_image = pygame.image.load(os.path.join(ASSETS_DIR, "destroyer.png")).convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (60, 60))  # spaceship size
         self.original_image = pygame.transform.rotate(self.original_image, 90)  # rotate left to face upward
         self.image = self.original_image.copy()
         self.rect = self.image.get_rect(center=(x, y))
 
-        self.original_image = self.image
         self.rect = self.image.get_rect(center=(x, y))
 
         self.particles = []
@@ -68,8 +69,6 @@ class Spaceship:
         nose_y = self.y - math.cos(rad) * nose_offset
 
         return Bullet(nose_x, nose_y, self.angle)
-        
-        self.particles = []  # in __init__
 
     def update_particles(self):
         if self.thrusting:

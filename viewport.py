@@ -1,12 +1,18 @@
 import pygame
 from PIL import Image
+import os
+from config import ASSETS_DIR
 
 # viewport
 WIDTH = 1200
 HEIGHT = 1000
 
 # Background Image
-img = Image.open("Background_image.png").convert("RGB")
-img.save("Background_fixed.png", format="PNG")
-background = pygame.image.load("E:/VSCode Files/Star Crash/Background_image.png")
+path = os.path.join(ASSETS_DIR, "Background_image.png")
+img = Image.open(path).convert("RGB")
+fixed_path = os.path.join(ASSETS_DIR, "Background_fixed.png")
+img.save(fixed_path, format="PNG")
+
+# load image with pygame
+background = pygame.image.load(fixed_path)
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))

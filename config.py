@@ -9,7 +9,7 @@ levels = {
         "radius": 100,
         "speed_range": (-1.5, 1.5),
         "acceleration": 0.001,
-        "rotation_speed": 0.2,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_two": {
@@ -17,7 +17,7 @@ levels = {
         "radius": 80,
         "speed_range": (-2, 2),
         "acceleration": 0.002,
-        "rotation_speed": 0.3,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_three": {
@@ -25,7 +25,7 @@ levels = {
         "radius": 75,
         "speed_range": (-2.5, 2.5),
         "acceleration": 0.003,
-        "rotation_speed": 0.4,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_four": {
@@ -33,7 +33,7 @@ levels = {
         "radius": 60,
         "speed_range": (-3, 3),
         "acceleration": 0.004,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_five": {
@@ -41,7 +41,7 @@ levels = {
         "radius": 60,
         "speed_range": (-3, 3),
         "acceleration": 0.004,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_six": {
@@ -49,7 +49,7 @@ levels = {
         "radius": 60,
         "speed_range": (-3, 3),
         "acceleration": 0.004,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_seven": {
@@ -57,7 +57,7 @@ levels = {
         "radius": 60,
         "speed_range": (-3, 3),
         "acceleration": 0.004,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_eight": {
@@ -65,7 +65,7 @@ levels = {
         "radius": 60,
         "speed_range": (-3, 3),
         "acceleration": 0.004,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_nine": {
@@ -73,7 +73,7 @@ levels = {
         "radius": 60,
         "speed_range": (-3, 3),
         "acceleration": 0.004,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_ten": {
@@ -81,7 +81,7 @@ levels = {
         "radius": 100,
         "speed_range": (-5, 5),
         "acceleration": 0.008,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_11": {
@@ -89,7 +89,7 @@ levels = {
         "radius": 60,
         "speed_range": (-3, 3),
         "acceleration": 0.004,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_12": {
@@ -97,7 +97,7 @@ levels = {
         "radius": 60,
         "speed_range": (-3, 3),
         "acceleration": 0.004,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
     "level_13": {
@@ -105,7 +105,7 @@ levels = {
         "radius": 60,
         "speed_range": (-3, 3),
         "acceleration": 0.004,
-        "rotation_speed": 0.5,
+        "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     }
 }

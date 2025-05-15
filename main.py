@@ -26,7 +26,7 @@ level_intro_time = 0
 ready_to_start = False
 death_flash = False
 death_flash_start = 0
-FLASH_DURATION = 500  # milliseconds
+FLASH_DURATION = 1000  # milliseconds
 ship = Spaceship(WIDTH // 2, HEIGHT // 2)
 bullets = []
 score_money = 50 # currency per asteroid broke
@@ -105,6 +105,8 @@ def main():
     global death_flash, death_flash_start
     global last_respawn_time
 
+    static_keys_released = True
+
     load_level(level)
     level_intro_time = pygame.time.get_ticks()
     show_level_screen = True
@@ -124,11 +126,15 @@ def main():
             if show_level_screen:
                 if level == "level_one":
                     if not ready_to_start:
-                        if any(keys):  # start on any key press
+                        if any(keys):
                             show_level_screen = False
                             ready_to_start = True
+                        else:
+                            draw_level_text(level)
+                            pygame.display.flip()
+                            continue
                 else:
-                    if current_time - level_intro_time < 2000:
+                    if current_time - level_intro_time < 1000:
                         draw_level_text(level)
                         pygame.display.flip()
                         continue
@@ -166,13 +172,23 @@ def main():
             bullet.move()
             bullet.draw(screen)
 
-        for asteroid in get_asteroids():
+        asteroid_list = get_asteroids()
+        for asteroid in asteroid_list:
             asteroid.move(WIDTH, HEIGHT)
             asteroid.draw(screen)
 
+        asteroid_list = get_asteroids()
         for bullet in bullets[:]:
             bullet_rect = bullet.rect()
-            for asteroid in get_asteroids()[:]:
+            for asteroid in asteroid_list[:]:  # iterate over a copy of same list
+                if bullet_rect.colliderect(asteroid.rect()):
+                    bullets.remove(bullet)
+                    asteroid_list.remove(asteroid)
+                    player_data["money"] += score_money
+                    new_asteroids = asteroid.split()
+                    asteroid_list.extend(new_asteroids)
+                    break
+
                 if bullet_rect.colliderect(asteroid.rect()):
                     bullets.remove(bullet)
                     get_asteroids().remove(asteroid)
@@ -195,7 +211,6 @@ def main():
  
         if not get_asteroids() and not game_over:
             current_level_index += 1
-            level_names = list(level_data.keys())
             if current_level_index < len(level_names):
                 level = level_names[current_level_index]
                 load_level(level)
@@ -215,7 +230,6 @@ def main():
             sys.exit()
 
         rotated_image, rotated_rect = ship.draw()
-        ship.draw_particles(screen)
         screen.blit(rotated_image, rotated_rect)
 
         if death_flash:
