@@ -13,9 +13,8 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Star Crash')
 clock = pygame.time.Clock()
-FIRE_DELAY = 200  # milliseconds between shots
 last_shot_time = 0
-INVINCIBILITY_DURATION = 2000
+INVINCIBILITY_DURATION = 3000
 last_respawn_time = 0
 lives = 3
 game_over = False
@@ -31,7 +30,6 @@ FLASH_DURATION = 500  # milliseconds
 ship = Spaceship(WIDTH // 2, HEIGHT // 2)
 bullets = []
 score_money = 50 # currency per asteroid broke
-FIRE_DELAY = player_data["upgrades"]["fire_rate"]
 
 SAVE_FILE = os.path.join(os.path.dirname(__file__), "player_save.json")
 
@@ -64,11 +62,48 @@ def load_player_data():
 
 load_player_data()
 
+def apply_upgrade(ship, upgrade_name):
+    global FIRE_DELAY
+    upgrade = upgrade_data[upgrade_name]
+    price = upgrade["price"]
+
+    if player_data["money"] < price:
+        print("Not enough money")
+        return
+
+    if upgrade_name == "fire_rate":
+        if player_data["upgrades"]["fire_rate"] + upgrade["increment"] < upgrade["min_value"]:
+            print("Fire rate maxed out")
+            return
+        player_data["money"] -= price
+        player_data["upgrades"]["fire_rate"] += upgrade["increment"]
+
+    elif upgrade_name == "max_speed":
+        if ship.max_speed + upgrade["increment"] > upgrade["max_value"]:
+            print("Speed maxed out")
+            return
+        player_data["money"] -= price
+        ship.max_speed += upgrade["increment"]
+
+    elif upgrade_name == "bullet_speed":
+        if player_data["upgrades"]["bullet_speed"] + upgrade["increment"] > upgrade["max_value"]:
+            print("Bullet speed maxed out")
+            return
+        player_data["money"] -= price
+        player_data["upgrades"]["bullet_speed"] += upgrade["increment"]
+
+    print(f"{upgrade_name} upgraded!")
+
+def save_player_data():
+    with open(SAVE_FILE, "w") as f:
+        json.dump(player_data, f, indent=4)
+
 def main():
     global last_shot_time, lives, game_over, level
     global show_level_screen, level_intro_time, ready_to_start
     global current_level_index
     global death_flash, death_flash_start
+    global last_respawn_time
 
     load_level(level)
     level_intro_time = pygame.time.get_ticks()
@@ -80,34 +115,41 @@ def main():
         current_time = pygame.time.get_ticks()
         keys = pygame.key.get_pressed()
 
-        # Show level text and pause logic
-        if show_level_screen:
-            draw_level_text(level)
-            pygame.display.flip()
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
-            if level == "level_one":
-                if not ready_to_start:
-                    if any(keys):  # start on any key press
-                        show_level_screen = False
-                        ready_to_start = True
-                    continue
-            else:
-                if current_time - level_intro_time < 3000:
-                    continue
-                else:
-                    show_level_screen = False
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-        if keys[pygame.K_SPACE] and current_time - last_shot_time > FIRE_DELAY:
+        # Show level text and pause logic
+            if show_level_screen:
+                if level == "level_one":
+                    if not ready_to_start:
+                        if any(keys):  # start on any key press
+                            show_level_screen = False
+                            ready_to_start = True
+                else:
+                    if current_time - level_intro_time < 2000:
+                        draw_level_text(level)
+                        pygame.display.flip()
+                        continue
+                    else:
+                        show_level_screen = False
+
+            else:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_1:
+                        apply_upgrade(ship, "fire_rate")
+                    elif event.key == pygame.K_2:
+                        apply_upgrade(ship, "max_speed")
+                    elif event.key == pygame.K_3:
+                        apply_upgrade(ship, "bullet_speed")
+        
+        if show_level_screen:
+            draw_level_text(level)
+            pygame.display.flip()
+            continue
+
+        if keys[pygame.K_SPACE] and current_time - last_shot_time > player_data["upgrades"]["fire_rate"]:
             bullets.append(ship.fire())
             last_shot_time = current_time
 
@@ -150,13 +192,15 @@ def main():
                     if lives <= 0:
                         game_over = True
                     break
-
+ 
         if not get_asteroids() and not game_over:
             current_level_index += 1
+            level_names = list(level_data.keys())
             if current_level_index < len(level_names):
                 level = level_names[current_level_index]
                 load_level(level)
                 level_intro_time = pygame.time.get_ticks()
+                last_respawn_time = level_intro_time 
                 show_level_screen = True
             else:
                 save_player_data()
@@ -182,50 +226,6 @@ def main():
                 screen.blit(flash_overlay, (0, 0))
             else:
                 death_flash = False
-
-        def apply_upgrade(ship, upgrade_name):
-            global player_money
-
-            upgrade = upgrade_data[upgrade_name]
-            price = upgrade["price"]
-
-            if player_money < price:
-                print("Not enough money")
-                return
-
-            if upgrade_name == "fire_rate":
-                if FIRE_DELAY + upgrade["increment"] < upgrade["min_value"]:
-                    print("Fire rate maxed out")
-                    return
-                player_data["money"] -= price
-                FIRE_DELAY += upgrade["increment"]
-
-            elif upgrade_name == "max_speed":
-                if ship.max_speed + upgrade["increment"] > upgrade["max_value"]:
-                    print("Speed maxed out")
-                    return
-                player_data["money"] -= price
-                ship.max_speed += upgrade["increment"]
-
-            elif upgrade_name == "bullet_speed":
-                if Bullet.speed + upgrade["increment"] > upgrade["max_value"]:
-                    print("Bullet speed maxed out")
-                    return
-                player_data["money"] -= price
-                Bullet.speed += upgrade["increment"]
-
-            print(f"{upgrade_name} upgraded!")
-
-            if keys[pygame.K_1]:
-                apply_upgrade(ship, "fire_rate")
-            if keys[pygame.K_2]:
-                 apply_upgrade(ship, "max_speed")
-            if keys[pygame.K_3]:
-                apply_upgrade(ship, "bullet_speed")
-            
-        def save_player_data():
-            with open(SAVE_FILE, "w") as f:
-                json.dump(player_data, f, indent=4)
 
         pygame.display.flip()
         clock.tick(60)

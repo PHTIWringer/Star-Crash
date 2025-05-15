@@ -1,10 +1,10 @@
 {
     "name": "Ken",
     "score": 0,
-    "money": 4550,
+    "money": 36450,
     "upgrades": {
         "fire_rate": 200,
         "max_speed": 100,
-        "bullet_speed": 10
+        "bullet_speed": 24
     }
 }
