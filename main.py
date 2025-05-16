@@ -29,9 +29,34 @@ death_flash_start = 0
 FLASH_DURATION = 1000  # milliseconds
 ship = Spaceship(WIDTH // 2, HEIGHT // 2)
 bullets = []
-score_money = 50 # currency per asteroid broke
+score_money = 10 # currency per asteroid broke
 
 SAVE_FILE = os.path.join(os.path.dirname(__file__), "player_save.json")
+
+def show_main_menu():
+    font = pygame.font.SysFont(None, 60)
+    small_font = pygame.font.SysFont(None, 36)
+    
+    while True:
+        screen.blit(background, (0, 0))
+
+        title = font.render("STAR CRASH", True, (255, 255, 255))
+        play_text = small_font.render("Press [S] to Start", True, (255, 255, 255))
+        score_text = small_font.render(f"High Score: {player_data.get('high_score', 0)}", True, (255, 255, 255))
+        
+        screen.blit(title, title.get_rect(center=(WIDTH//2, HEIGHT//3)))
+        screen.blit(play_text, play_text.get_rect(center=(WIDTH//2, HEIGHT//2)))
+        screen.blit(score_text, score_text.get_rect(center=(WIDTH//2, HEIGHT//2 + 40)))
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:
+                    return  # exit menu, start game
 
 def reset_ship():
     global last_respawn_time
@@ -95,6 +120,10 @@ def apply_upgrade(ship, upgrade_name):
     print(f"{upgrade_name} upgraded!")
 
 def save_player_data():
+    # Update high score if current score is higher
+    if player_data["score"] > player_data.get("high_score", 0):
+        player_data["high_score"] = player_data["score"]
+
     with open(SAVE_FILE, "w") as f:
         json.dump(player_data, f, indent=4)
 
@@ -245,5 +274,7 @@ def main():
 
         pygame.display.flip()
         clock.tick(60)
+
+show_main_menu()
 
 main()

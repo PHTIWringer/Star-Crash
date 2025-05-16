@@ -122,9 +122,9 @@ upgrades = {
         "max_value": 300
     },
     "bullet_speed": {
-        "price": 200,
-        "increment": 2,
-        "max_value": 25
+        "price": 400,
+        "increment": 1,
+        "max_value": 40
     }
 }
 
@@ -132,6 +132,7 @@ player_data = {
     "name": "Ken",
     "score": 0,
     "money": 0,
+    "high_score": 0,
     "upgrades": {
         "fire_rate": 200,
         "max_speed": 100,
