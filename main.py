@@ -216,6 +216,7 @@ def main():
                     bullets.remove(bullet)
                     asteroid_list.remove(asteroid)
                     player_data["money"] += score_money
+                    player_data["score"] += 1
                     new_asteroids = asteroid.split()
                     asteroid_list.extend(new_asteroids)
                     break
