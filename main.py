@@ -174,6 +174,8 @@ def main():
 
         asteroid_list = get_asteroids()
         for asteroid in asteroid_list:
+            if asteroid.homing:
+                asteroid.target = (ship.x, ship.y)
             asteroid.move(WIDTH, HEIGHT)
             asteroid.draw(screen)
 

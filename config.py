@@ -56,7 +56,7 @@ levels = {
         "count": 8,
         "radius": 60,
         "speed_range": (-3, 3),
-        "acceleration": 0.004,
+        "acceleration": 0.005,
         "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
@@ -64,7 +64,7 @@ levels = {
         "count": 9,
         "radius": 60,
         "speed_range": (-3, 3),
-        "acceleration": 0.004,
+        "acceleration": 0.005,
         "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
@@ -72,39 +72,39 @@ levels = {
         "count": 10,
         "radius": 60,
         "speed_range": (-3, 3),
-        "acceleration": 0.004,
+        "acceleration": 0.005,
         "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
-    "level_ten": {
+    "level_ten": {  # Boss-style
         "count": 3,
         "radius": 100,
-        "speed_range": (-5, 5),
+        "speed_range": (-2, 2),
+        "acceleration": 0.006,
+        "rotation_speed": 0.1,
+        "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
+    },
+    "level_11": {  # Dense slow swarm
+        "count": 8,
+        "radius": 60,
+        "speed_range": (-1, 1),
+        "acceleration": 0.006,
+        "rotation_speed": 0.1,
+        "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
+    },
+    "level_12": {  # Fast and twitchy
+        "count": 10,
+        "radius": 50,
+        "speed_range": (-3, 3),
         "acceleration": 0.008,
         "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     },
-    "level_11": {
-        "count": 8,
-        "radius": 60,
-        "speed_range": (-3, 3),
-        "acceleration": 0.004,
-        "rotation_speed": 0.1,
-        "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
-    },
-    "level_12": {
-        "count": 9,
-        "radius": 60,
-        "speed_range": (-3, 3),
-        "acceleration": 0.004,
-        "rotation_speed": 0.1,
-        "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
-    },
-    "level_13": {
-        "count": 15,
-        "radius": 60,
-        "speed_range": (-3, 3),
-        "acceleration": 0.004,
+    "level_13": {  # Final chaos
+        "count": 10,
+        "radius": 45,
+        "speed_range": (-2.5, 2.5),
+        "acceleration": 0.01,
         "rotation_speed": 0.1,
         "image": os.path.join(ASSETS_DIR, "meteor_detailed_NE.png")
     }

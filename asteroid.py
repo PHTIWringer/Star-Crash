@@ -1,7 +1,7 @@
 import pygame, random, math
     
 class Asteroid:
-    def __init__(self, x, y, dx, dy, radius, image=None, level=3, acceleration=0, rotation_speed=0):
+    def __init__(self, x, y, dx, dy, radius, image=None, level=3, acceleration=0, rotation_speed=0, homing=False):
         self.x = x
         self.y = y
         self.dx = dx
@@ -12,13 +12,20 @@ class Asteroid:
         self.acceleration = acceleration
         self.rotation_speed = rotation_speed
         self.angle = 0
+        self.homing = homing
 
     def rect(self):
         return pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
 
     def move(self, screen_width, screen_height):
         # Apply acceleration
-        direction = math.atan2(self.dy, self.dx)
+        if self.homing and hasattr(self, "target"):
+    # vector toward ship
+            tx, ty = self.target
+            direction = math.atan2(ty - self.y, tx - self.x)
+        else:
+            direction = math.atan2(self.dy, self.dx)
+
         self.dx += self.acceleration * math.cos(direction)
         self.dy += self.acceleration * math.sin(direction)
 

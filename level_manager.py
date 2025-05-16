@@ -28,15 +28,19 @@ def load_level(level_name):
         y = random.randint(0, HEIGHT)
         dx = random.uniform(*speed_range)
         dy = random.uniform(*speed_range)
+        
 
         scaled = pygame.transform.scale(original, (radius * 2, radius * 2))
+
+        homing = random.random() < 0.2  # 20% chance of being a homing asteroid
 
         asteroids.append(Asteroid(
             x, y, dx, dy, radius,
             image=scaled,
             level=3,
             acceleration=accel,
-            rotation_speed=rotation
+            rotation_speed=rotation,
+            homing=homing
         ))
 
 def get_asteroids():
