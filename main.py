@@ -8,7 +8,6 @@ from projectiles import Bullet
 import json, os
 from config import player_data
 
-# Init
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Star Crash')
@@ -16,9 +15,9 @@ clock = pygame.time.Clock()
 last_shot_time = 0
 INVINCIBILITY_DURATION = 3000
 last_respawn_time = 0
-lives = 3
+lives = 5
 game_over = False
-level_names = list(level_data.keys())  # ["level_one", "level_two", ...]
+level_names = list(level_data.keys())
 current_level_index = 0
 level = level_names[current_level_index]
 show_level_screen = True
@@ -211,7 +210,7 @@ def main():
         asteroid_list = get_asteroids()
         for bullet in bullets[:]:
             bullet_rect = bullet.rect()
-            for asteroid in asteroid_list[:]:  # iterate over a copy of same list
+            for asteroid in asteroid_list[:]:
                 if bullet_rect.colliderect(asteroid.rect()):
                     bullets.remove(bullet)
                     asteroid_list.remove(asteroid)
@@ -219,9 +218,9 @@ def main():
                     player_data["score"] += 1
                     new_asteroids = asteroid.split()
                     asteroid_list.extend(new_asteroids)
-                    break
+                    break  
 
-                if bullet_rect.colliderect(asteroid.rect()):
+                if bullet_rect.colliderect(asteroid.rect()):                  
                     bullets.remove(bullet)
                     get_asteroids().remove(asteroid)
                     player_data["money"] += score_money
@@ -268,7 +267,7 @@ def main():
             if pygame.time.get_ticks() - death_flash_start < FLASH_DURATION:
                 flash_overlay = pygame.Surface((WIDTH, HEIGHT))
                 flash_overlay.fill((255, 0, 0))
-                flash_overlay.set_alpha(100)  # semi-transparent
+                flash_overlay.set_alpha(100)
                 screen.blit(flash_overlay, (0, 0))
             else:
                 death_flash = False
